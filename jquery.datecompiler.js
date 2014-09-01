@@ -15,26 +15,31 @@
         }())).on('change', changeFnc);
     } 
     
-    $.fn.tnfDateCompiler = function(options) {
+    $.fn.datecompiler = function(options) {
         var defaults = {
-            prefix: 		'datepick__',
-            groupInputs: 	true,
-            groupClass: 	'form-inline',
-            selectClass: 	'form-control',
+            prefix:         'dc__',
+            separator:      '/',
+            groupInputs:    true,
+            groupClass:     '',
+            selectClass:    'form-control',
             futureYears:    5,
-            onCompile: 		function() {}
+            oncompile:      null
         },
         opts = $.extend(defaults, options);              
   
         this.each(function() {
             var self    = this,
-            	$group 	= null,
+                $group  = null,
                 $day    = null,
                 $month  = null,
                 $year   = null,
                 compile = function() {
-                    self.value = $month[0].value+'/'+$day[0].value+'/'+$year[0].value;
-                    opts.onCompile.call(self, self.value)
+
+                    self.value = $month[0].value+opts.separator+$day[0].value+opts.separator+$year[0].value;
+                    
+                    if ( opts.oncompile && typeof opts.oncompile === 'function' ) {
+                        opts.oncompile.call(self, self.value)
+                    }
                 },
                 selectClass = (opts.selectClass.length ? ' '+opts.selectClass : '');
 
@@ -73,11 +78,11 @@
             }, compile);
 
             if ( opts.groupInputs ) {
-            	$group = $('<div/>', {
-            		'class': opts.groupClass
-            	}).append([$day, $month, $year])
+                $group = $('<div/>', {
+                    'class': opts.groupClass
+                }).append([$day, $month, $year])
             } else {
-            	$group = [$day, $month, $year]
+                $group = [$day, $month, $year]
             }
 
             $(this).css({
