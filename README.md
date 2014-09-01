@@ -69,7 +69,7 @@ Output example:
 
 #### startYear
 Type: `String | Integer`
-Default:  _Current year_
+Default:  _current year_
 
 First year displayed as an `<option/>` in the year `<select/>` input.
 
@@ -77,7 +77,7 @@ First year displayed as an `<option/>` in the year `<select/>` input.
 Type: `Integer`
 Default: `5`
 
-How many years forward to add to the year `<select />` input.
+How many years forward from _current year_ to add to the year `<select />` input.
 
 #### oncompile
 Type: `function`
