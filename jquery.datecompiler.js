@@ -1,6 +1,9 @@
 ;(function($) {
-    var abbr    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-        today   = new Date();
+    var abbr        = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        today       = new Date(),
+        thisDay     = today.getDate(),
+        thisMonth   = today.getMonth(),
+        thisYear    = today.getFullYear();
 
     function padNumber(n) {
         return (n < 10 ? '0' : '')+n;
@@ -22,6 +25,7 @@
             groupInputs:    true,
             groupClass:     '',
             selectClass:    'form-control',
+            startYear:      thisYear,
             futureYears:    5,
             oncompile:      null
         },
@@ -44,34 +48,34 @@
                 selectClass = (opts.selectClass.length ? ' '+opts.selectClass : '');
 
             $day = createSelect(opts.prefix+'day'+selectClass, function() {
-                var pdnm = '',
-                    days = [];    
+                var pdnm    = '',
+                    days    = [];    
 
                 for (var d = 1; d <= 31; d++ ) {
                     pdnm = padNumber(d);
-                    days.push('<option value="'+pdnm+'"'+(d == today.getDate() ? ' selected="selected"' : '')+'>'+pdnm+'</option>');
+                    days.push('<option value="'+pdnm+'"'+(d == thisDay ? ' selected="selected"' : '')+'>'+pdnm+'</option>');
                 }
 
                 return days; 
             }, compile);
 
             $month = createSelect(opts.prefix+'month'+selectClass, function() {
-                var months  = [];
+                var months      = [];
 
                 for (var m = 0; m < 12; m++ ) {
-                    months.push('<option value="'+padNumber((m+1))+'"'+(m == today.getMonth() ? ' selected="selected"' : '')+'>'+abbr[m]+'</option>');
+                    months.push('<option value="'+padNumber((m+1))+'"'+(m == thisMonth ? ' selected="selected"' : '')+'>'+abbr[m]+'</option>');
                 }
 
                 return months;
             }, compile);
 
-            $year = createSelect(opts.prefix+'year'+selectClass, function() {
-                var thisYear    = today.getFullYear(),
-                    years       = [];
+            $year = createSelect(opts.prefix+'year'+selectClass, function() {                
+                var startYear       = parseInt(opts.startYear,10),
+                    maxYear         = startYear + ((thisYear - startYear) + opts.futureYears),
+                    years           = [];
 
-                for (var y = 1; y <= opts.futureYears; y++) {
-                    years.push('<option value="'+thisYear+'">'+thisYear+'</option>');
-                    thisYear++;
+                for (var y = startYear; y <= maxYear; y++) {
+                    years.push('<option value="'+y+'"'+(y == thisYear ? ' selected="selected"' : '')+'>'+y+'</option>');
                 }
 
                 return years;

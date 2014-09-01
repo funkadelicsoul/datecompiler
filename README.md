@@ -1,5 +1,7 @@
 # datecompiler
 
+Add Year, Month, Day inputs for single date field
+
 ## Usage
 
 `$('.input').datecompiler({options});`
@@ -64,6 +66,12 @@ Output example:
 ...
 </div>
 ```
+
+#### startYear
+Type: `String | Integer`
+Default:  _Current year_
+
+First year displayed as an `<option/>` in the year `<select/>` input.
 
 #### futureYears
 Type: `Integer`
