@@ -85,6 +85,18 @@ Default: `5`
 
 How many years forward from _current year_ to add to the year `<select />` input.
 
+#### inputOrder
+Type: `object`
+Default: `{ day: 0, month: 1, year: 2 }`
+
+Order  generated `<select/>` inputs are displayed.
+
+#### outputOrder
+Type: `object`
+Default: `{ day: 1, month: 0, year: 2 }`
+
+Order  value parts are returned in. E.g. MM/DD/YYYY
+
 #### oncompile
 Type: `function`
 Default: `null`
@@ -112,5 +124,4 @@ CSS to hide the target input. Some validation scripts don't validate `hidden` in
  - Examples added to readme docs
  - Demo
  - More options: 
-	 - date order (YYYY-MM-DD, DD-MM-YYYY, MM-DD-YYYY)
 	 - Hidden input method ("hide" using CSS or `<hidden />` field)

@@ -28,6 +28,16 @@
             abbrMonths:     true,
             startYear:      thisYear,
             futureYears:    5,
+            inputOrder:     {
+                day:    0,
+                month:  1,
+                year:   2
+            },
+            outputOrder: {
+                day:    1,
+                month:  0,
+                year:   2
+            },
             oncompile:      null,
             css:            {
                 'opacity':  0,
@@ -43,12 +53,16 @@
         this.each(function() {
             var self    = this,
                 $group  = null,
-                $day    = null,
-                $month  = null,
-                $year   = null,
+                inputs  = {},
+                outputs = [],
                 compile = function() {
+                    var ret = []
+                    
+                    $.each(opts.outputOrder, function(key, i) {
+                       ret[i] = inputs['$'+key][0].value
+                    })
 
-                    self.value = $month[0].value+opts.separator+$day[0].value+opts.separator+$year[0].value;
+                    self.value = ret.join(opts.separator);
                     
                     if ( opts.oncompile && typeof opts.oncompile === 'function' ) {
                         opts.oncompile.call(self, self.value)
@@ -56,7 +70,7 @@
                 },
                 selectClass = (opts.selectClass.length ? ' '+opts.selectClass : '');
 
-            $day = createSelect(opts.prefix+'day'+selectClass, function() {
+            inputs['$day'] = createSelect(opts.prefix+'day'+selectClass, function() {
                 var pdnm    = '',
                     days    = [];    
 
@@ -68,21 +82,20 @@
                 return days; 
             }, compile);
 
-            $month = createSelect(opts.prefix+'month'+selectClass, function() {
+            inputs['$month'] = createSelect(opts.prefix+'month'+selectClass, function() {
                 var months      = [],
                     pdnm, monthName;
 
                 for (var m = 0; m < 12; m++ ) {
                     pdnm = padNumber((m+1))
                     monthName = opts.abbrMonths == 'number' ? pdnm : opts.abbrMonths ? monthNames[m].substring(0,3) : monthNames[m]
-
                     months.push('<option value="'+pdnm+'"'+(m == thisMonth ? ' selected="selected"' : '')+'>'+monthName+'</option>');
                 }
 
                 return months;
             }, compile);
 
-            $year = createSelect(opts.prefix+'year'+selectClass, function() {                
+            inputs['$year'] = createSelect(opts.prefix+'year'+selectClass, function() {                
                 var startYear       = parseInt(opts.startYear,10),
                     maxYear         = startYear + ((thisYear - startYear) + opts.futureYears),
                     years           = [];
@@ -94,12 +107,16 @@
                 return years;
             }, compile);
 
+            $.each(opts.inputOrder, function(key, i) {
+                outputs[i] = inputs['$'+key]
+            })
+
             if ( opts.groupInputs ) {
                 $group = $('<div/>', {
                     'class': opts.groupClass
-                }).append([$day, $month, $year])
+                }).append(outputs)
             } else {
-                $group = [$day, $month, $year]
+                $group = outputs
             }
 
             $(this).css(opts.css).val('').before($group);
