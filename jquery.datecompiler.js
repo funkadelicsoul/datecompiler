@@ -1,5 +1,5 @@
 ;(function($) {
-    var abbr        = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    var monthNames  = ['January','February','March','April','May','June','July','August','September','October','November','December'],
         today       = new Date(),
         thisDay     = today.getDate(),
         thisMonth   = today.getMonth(),
@@ -25,11 +25,20 @@
             groupInputs:    true,
             groupClass:     '',
             selectClass:    'form-control',
+            abbrMonths:     true,
             startYear:      thisYear,
             futureYears:    5,
-            oncompile:      null
+            oncompile:      null,
+            css:            {
+                'opacity':  0,
+                'height':   0,
+                'padding':  0,
+                'margin':   0,
+                'position': 'absolute',
+                'z-index': '-100'
+            }
         },
-        opts = $.extend(defaults, options);              
+        opts = $.extend(true, defaults, options);
   
         this.each(function() {
             var self    = this,
@@ -60,10 +69,14 @@
             }, compile);
 
             $month = createSelect(opts.prefix+'month'+selectClass, function() {
-                var months      = [];
+                var months      = [],
+                    pdnm, monthName;
 
                 for (var m = 0; m < 12; m++ ) {
-                    months.push('<option value="'+padNumber((m+1))+'"'+(m == thisMonth ? ' selected="selected"' : '')+'>'+abbr[m]+'</option>');
+                    pdnm = padNumber((m+1))
+                    monthName = opts.abbrMonths == 'number' ? pdnm : opts.abbrMonths ? monthNames[m].substring(0,3) : monthNames[m]
+
+                    months.push('<option value="'+pdnm+'"'+(m == thisMonth ? ' selected="selected"' : '')+'>'+monthName+'</option>');
                 }
 
                 return months;
@@ -89,12 +102,7 @@
                 $group = [$day, $month, $year]
             }
 
-            $(this).css({
-                'opacity':  0,
-                'height':   0,
-                'padding':  0,
-                'margin':   0
-            }).val('').before($group);
+            $(this).css(opts.css).val('').before($group);
 
         });
         

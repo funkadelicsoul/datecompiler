@@ -67,6 +67,12 @@ Output example:
 </div>
 ```
 
+#### abbrMonths
+Type: `Boolean | String`
+Default: `true`
+
+Abbreviate the month display to first three characters or not or display months as numbers by using a string value of `numbers`.
+
 #### startYear
 Type: `String | Integer`
 Default:  _current year_
@@ -95,6 +101,11 @@ function(value) {
 }
 ```
 
+#### css
+Type: `object`
+Default: `{ properties: values }`
+
+CSS to hide the target input. Some validation scripts don't validate `hidden` inputs or fields that have CSS settings of `display:none` or `visibility:hidden`.
 
 ## TODO:
 
