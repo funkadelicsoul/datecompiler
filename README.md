@@ -4,7 +4,7 @@ Add Year, Month, Day inputs for single date field
 
 ## Usage
 
-`$('.input').datecompiler({options});`
+`$('#my-input').datecompiler({options});`
 
 ## Config
 
@@ -114,14 +114,70 @@ function(value) {
 ```
 
 #### css
-Type: `object`
+Type: `object | string`
 Default: `{ properties: values }`
 
 CSS to hide the target input. Some validation scripts don't validate `hidden` inputs or fields that have CSS settings of `display:none` or `visibility:hidden`.
 
-## TODO:
+To remove all CSS use  `reset`:
 
- - Examples added to readme docs
- - Demo
- - More options: 
-	 - Hidden input method ("hide" using CSS or `<hidden />` field)
+`$('#my-input').datecompiler({ css: 'reset' });`
+
+## Examples
+
+### Basic
+```
+$('#my-input').datecompiler();
+```
+
+### Alter CSS and provide group class name
+```
+$('#my-input').datecompiler({
+	groupClass: 'date_inputs',
+	css: {
+        'opacity':  '',
+        'height':   '',
+        'padding':  '5px',
+        'margin':   '10px 0',
+        'position': '',
+        'z-index': ''
+    }
+});
+```
+
+### Input US (MM DD YYYY) and Output ISO 8601 (YYYY-MM-DD)
+```
+$('#my-input').datecompiler({
+	separator: '-',
+	inputOrder: {
+		day: 1,
+		month: 0,
+		year: 2
+	},
+	outputOrder: {
+		day: 2,
+		month: 1,
+		year: 0
+	}
+});
+```
+
+### Display years from 2000 to 2030
+```
+$('#my-input').datecompiler({
+	startYear: '2000',
+	futureYears: (2030 - (new Date().getFullYear()))
+});
+```
+
+### Validate date as user makes choice
+```
+$('#my-input').datecompiler({
+	oncompile: function(dateVal) {
+		$(this).validateDate(dateVal)
+	}
+});
+```
+
+## TODO:
+ - Demos
