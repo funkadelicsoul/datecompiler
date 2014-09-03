@@ -51,7 +51,8 @@
         opts = $.extend(true, defaults, options);
   
         this.each(function() {
-            var self    = this,
+            var _self   = this,
+                $self   = $(_self),
                 $group  = null,
                 inputs  = {},
                 outputs = [],
@@ -62,10 +63,10 @@
                        ret[i] = inputs['$'+key][0].value
                     })
 
-                    self.value = ret.join(opts.separator);
+                    _self.value = ret.join(opts.separator);
                     
                     if ( opts.oncompile && typeof opts.oncompile === 'function' ) {
-                        opts.oncompile.call(self, self.value)
+                        opts.oncompile.call(_self, _self.value)
                     }
                 },
                 selectClass = (opts.selectClass.length ? ' '+opts.selectClass : '');
@@ -119,7 +120,7 @@
                 $group = outputs
             }
 
-            $(this).css(opts.css).val('').before($group);
+            $self.css((opts.css === 'reset' ? {} : opts.css)).val('').before($group);
 
         });
         
